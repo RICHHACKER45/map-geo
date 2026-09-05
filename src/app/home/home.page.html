@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Blank
+      Continuous Geo Tracking
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,15 +9,40 @@
 <ion-content [fullscreen]="true">
   <div id="map"></div>
   <ion-alert [message]="errorMessage" [header]="headerMessage" [isOpen]="isAlertOpen" [buttons]="['Okay']"></ion-alert>
-</ion-content>
 
+  <!-- Control Panel (Phone Ready) -->
+  <div class="control-panel">
+    
+    <!-- Real GPS Tracking Section -->
+    <div class="section-title">📡 Real GPS Tracking (watchPosition)</div>
+    <div class="button-group">
+      <ion-button color="success" expand="block" shape="round" (click)="startTracking()">
+        ▶ Start Tracking
+      </ion-button>
+      <ion-button color="danger" expand="block" shape="round" (click)="stopTracking()">
+        ⏹ Stop Tracking
+      </ion-button>
+    </div>
+
+    <!-- Simulation Section -->
+    <div class="section-title">🚶 Laboratory Walk Simulation</div>
+    <div class="button-group">
+      <ion-button color="tertiary" expand="block" shape="round" fill="outline" (click)="startSimulation()">
+        ▶ Start Sim
+      </ion-button>
+      <ion-button color="medium" expand="block" shape="round" fill="outline" (click)="stopSimulation()">
+        ⏹ Stop Sim
+      </ion-button>
+    </div>
+
+  </div>
+</ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-title>
-     Starting Position : {{startingPositionX?.lat}},{{startingPositionX?.lng}}
-     <br>
-     Live Position : {{livePosition?.lats}},{{livePosition?.lngs}}
-    </ion-title>
+    <div class="footer-info">
+      <div><strong>Starting Position:</strong> {{startingPositionX?.lat}}, {{startingPositionX?.lng}}</div>
+      <div><strong>Live Position:</strong> {{livePosition?.lats}}, {{livePosition?.lngs}}</div>
+    </div>
   </ion-toolbar>
 </ion-footer>

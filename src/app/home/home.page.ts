@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, inject, ChangeDetectorRef, effect } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonFooter, IonAlert } from '@ionic/angular';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonFooter, IonAlert, IonButton } from '@ionic/angular';
 import * as l from 'leaflet';
-import {Geolocation} from '@capacitor/geolocation';
+import { Geolocation } from '@capacitor/geolocation';
 import { Geo } from '../services/geo';
 
 
@@ -9,7 +9,7 @@ import { Geo } from '../services/geo';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonFooter, IonAlert],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonFooter, IonAlert, IonButton],
 })
 export class HomePage implements AfterViewInit{
   // map variable from leaflet
@@ -103,10 +103,41 @@ export class HomePage implements AfterViewInit{
     if(startingPosition === null){
       this.isAlertOpen = true;
     }else{
-    console.log(startingPosition);
-    this.startingPositionX = startingPosition;
-    this.cdr.detectChanges();
-    this.mapInit();
+      console.log(startingPosition);
+      this.startingPositionX = startingPosition;
+      this.cdr.detectChanges();
+      this.mapInit();
+    }
   }
+
+  // ==========================================
+  // SEPARATION OF CONCERNS: CONTROL HANDLERS
+  // ==========================================
+
+  // --- Real-time GPS Tracking ---
+  startTracking() {
+    console.log('Starting real GPS tracking...');
+    this.geoService.watchLatLong();
+  }
+
+  stopTracking() {
+    console.log('Stopping real GPS tracking...');
+    this.geoService.stopWatching();
+  }
+
+  // --- Walking Simulation (Laboratory Testing) ---
+  startSimulation() {
+    if (this.startingPositionX) {
+      console.log('Starting walking simulation...');
+      this.geoService.simulateWalking(
+        this.startingPositionX.lat,
+        this.startingPositionX.lng
+      );
+    }
+  }
+
+  stopSimulation() {
+    console.log('Stopping walking simulation...');
+    this.geoService.stopSimulation();
   }
 }
