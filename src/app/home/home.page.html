@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="map"></div>
+  <ion-alert [message]="errorMessage" [header]="headerMessage" [isOpen]="isAlertOpen" [buttons]="['Okay']"></ion-alert>
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>
+     Starting Position : {{startingPositionX?.lat}},{{startingPositionX?.lng}}
+     <br>
+     Live Position : {{livePosition?.lats}},{{livePosition?.lngs}}
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>
