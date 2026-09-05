@@ -70,6 +70,7 @@ export class HomePage implements AfterViewInit{
     })
   }
   
+
   mapInit(){
     // Initializing map
     this.map = l.map('map' ,{
