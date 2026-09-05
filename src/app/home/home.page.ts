@@ -20,25 +20,53 @@ export class HomePage implements AfterViewInit{
   startingPositionX!:any;
   private cdr = inject(ChangeDetectorRef);
   livePosition!:any;
+  liveMarker!:l.CircleMarker;
+  liveLine!:l.Polyline;
   
   geoService = inject(Geo);
 
   constructor(){
-    this.geoService.watchLatLong();
+    // this.geoService.watchLatLong();
     effect(() => {
       console.log(this.geoService.liveLatLong());
       this.livePosition = this.geoService.liveLatLong();
       this.cdr.detectChanges();
 
-      l.circleMarker([this.livePosition?.lats, this.livePosition?.lngs],{
-        radius: 5,
-        color:'#4476e3',
-        fillColor: '#4476e3',
-        fillOpacity: 0.5,
-        stroke: true,
-        weight: 3
+      if (this.livePosition) {
+        if(!this.liveMarker){
+          this.liveMarker = l.circleMarker([
+            this.livePosition?.lats,
+            this.livePosition?.lngs],
+            {
+              radius:5,
+              color: '#4476e3',
+              fillColor: '#4476e3',
+              fillOpacity: 0.5,
+              stroke:true,
+              weight:3
+            }).addTo(this.map);
+        }else{
+          this.liveMarker.setLatLng([
+            this.livePosition?.lats,
+            this.livePosition?.lngs
+          ])
+        }
+
+        const convertedPos1 = l.latLng(this.startingPositionX.lat,this.startingPositionX.lng);
+        const convertedPos2 = l.latLng(this.livePosition.lats,this.livePosition.lngs);
+
+        const distance = convertedPos1.distanceTo(convertedPos2).toFixed(2);
+        console.log(distance)
+
+        if (!this.liveLine) {
+          this.liveLine = l.polyline([convertedPos1,convertedPos2]).addTo(this.map);
+        }else{
+          this.liveLine.setLatLngs([convertedPos1,convertedPos2]);
+        }
         
-      }).addTo(this.map); 
+        // setting tooltip to display the distance between the two points
+        this.liveLine.bindTooltip(`${distance}m` , {permanent:true, direction:'top'});
+      }
     })
   }
   

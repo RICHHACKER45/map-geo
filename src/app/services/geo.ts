@@ -38,9 +38,10 @@ export class Geo {
        this.liveLatLong.set({
         lats: position?.coords.latitude,
         lngs: position?.coords.longitude
-       })
+       })   
        console.log(this.liveLatLong)
     })
     return watchId;
   }
+
 }
